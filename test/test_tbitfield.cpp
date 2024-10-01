@@ -309,3 +309,69 @@ TEST(TBitField, bitfields_with_different_bits_are_not_equal)
 
   EXPECT_NE(bf1, bf2);
 }
+
+TEST(TBitField, double_clear_bit_leaves_zero)
+{
+    TBitField bf(10);
+
+    bf.SetBit(3);
+    bf.ClrBit(3);
+    bf.ClrBit(3);
+
+    EXPECT_EQ(0, bf.GetBit(3));
+}
+
+TEST(TBitField, multiple_bitwise_operations)
+{
+    const int size = 4;
+
+    TBitField bf1(size), bf2(size), bf3(size), expBf(size);
+
+    // bf1 = 0011
+    bf1.SetBit(2);
+    bf1.SetBit(3);
+
+    // bf2 = 0101
+    bf2.SetBit(1);
+    bf2.SetBit(3);
+
+    // bf3 = 1001
+    bf3.SetBit(0);
+    bf3.SetBit(3);
+
+    // expBf = 1111 (bf1 | bf2 | bf3)
+    expBf.SetBit(0);
+    expBf.SetBit(1);
+    expBf.SetBit(2);
+    expBf.SetBit(3);
+
+    EXPECT_EQ(expBf, bf1 | bf2 | bf3);
+}
+
+TEST(TBitField, can_add_multiple_bitfields_correctly)
+{
+    const int size1 = 4, size2 = 5, size3 = 6;
+
+    TBitField bf1(size1), bf2(size2), bf3(size3), expBf(size3);
+
+    // bf1 = 0011 (size1 = 4)
+    bf1.SetBit(2);
+    bf1.SetBit(3);
+
+    // bf2 = 11000 (size2 = 5)
+    bf2.SetBit(0);
+    bf2.SetBit(1);
+
+    // bf3 = 100100 (size3 = 6)
+    bf3.SetBit(1);
+    bf3.SetBit(4);
+
+    // expBf = 111100 (size3 = 6)
+    expBf.SetBit(0);
+    expBf.SetBit(1);
+    expBf.SetBit(2);
+    expBf.SetBit(3);
+    expBf.SetBit(4);
+
+    EXPECT_EQ(expBf, bf1 | bf2 | bf3);
+}

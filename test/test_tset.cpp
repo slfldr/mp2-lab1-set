@@ -295,3 +295,43 @@ TEST(TSet, check_negation_operator)
 
   EXPECT_EQ(expSet, set1);
 }
+
+TEST(TSet, can_check_empty_set)
+{
+    const int size = 5;
+
+    TSet set(size);
+
+    EXPECT_EQ(set.GetMaxPower(), size);
+
+    for (int i = 0; i < size; i++)
+    {
+        EXPECT_EQ(set.IsMember(i), 0);
+    }
+}
+
+TEST(TSet, can_check_set_membership)
+{
+    const int size = 5;
+    const int k = 2;
+
+    TSet set(size);
+
+    set.InsElem(k);
+
+    EXPECT_EQ(set.IsMember(k), 1);
+    EXPECT_EQ(set.IsMember(3), 0);
+}
+
+TEST(TSet, can_negate_empty_set)
+{
+    const int size = 5;
+
+    TSet set(size);
+    TSet negatedSet = ~set;
+
+    for (int i = 0; i < size; i++)
+    {
+        EXPECT_NE(0, negatedSet.IsMember(i));
+    }
+}
