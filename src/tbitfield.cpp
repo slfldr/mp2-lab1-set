@@ -26,12 +26,11 @@ TBitField::TBitField(int len)
     }
     else
     {
-        throw std::invalid_argument("Length must be positive");
+        throw std::invalid_argument("Length must be positive!");
     }
 }
 
-// Конструктор копирования
-TBitField::TBitField(const TBitField &bf)
+TBitField::TBitField(const TBitField &bf) // конструктор копирования
 {
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
@@ -40,10 +39,11 @@ TBitField::TBitField(const TBitField &bf)
     std::copy(bf.pMem, bf.pMem + MemLen, pMem);
 }
 
-// Деструктор
 TBitField::~TBitField()
 {
     delete[] pMem;
+    
+    pMem = nullptr;
 }
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
@@ -70,7 +70,7 @@ void TBitField::SetBit(const int n) // установить бит
     }
     else
     {
-        throw std::out_of_range("Bit index out of range");
+        throw std::out_of_range("Bit index out of range!");
     }
 }
 
@@ -105,32 +105,37 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
     {
         delete[] pMem;
 
+        pMem = nullptr;
         BitLen = bf.BitLen;
         MemLen = bf.MemLen;
         pMem = new TELEM[MemLen];
 
-        std::copy(bf.pMem, bf.pMem + MemLen, pMem);
+        std::copy(bf.pMem, bf.pMem + bf.MemLen, pMem);
     }
-
-    return *this;
+    else
+    {
+        return *this;
+    }
 }
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
 {
-    if (BitLen != bf.BitLen)
+    if (BitLen == bf.BitLen)
+    {
+        for (int i = 0; i < MemLen; i++)
+        {
+            if (pMem[i] != bf.pMem[i])
+            {
+                return 0;
+            }
+        }
+
+        return 1;
+    }
+    else
     {
         return 0;
     }
-
-    for (int i = 0; i < MemLen; i++)
-    {
-        if (pMem[i] != bf.pMem[i])
-        {
-            return 0;
-        }
-    }
-
-    return 1;
 }
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
