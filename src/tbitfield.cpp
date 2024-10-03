@@ -118,10 +118,10 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
     if (this != &bf)
     {
+        BitLen = bf.BitLen;
+
         if (MemLen == bf.MemLen)
         {
-            BitLen = bf.BitLen;
-
             copy(bf.pMem, bf.pMem + bf.MemLen, pMem);
         }
         else
