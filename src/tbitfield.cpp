@@ -22,11 +22,11 @@ TBitField::TBitField(int len)
         MemLen = (len + sizeof(TELEM) * 8 - 1) / (sizeof(TELEM) * 8);
         pMem = new TELEM[MemLen];
 
-        std::fill(pMem, pMem + MemLen, 0);
+        fill(pMem, pMem + MemLen, 0);
     }
     else
     {
-        throw std::invalid_argument("Length must be positive!");
+        throw invalid_argument("Length must be positive!");
     }
 }
 
@@ -36,7 +36,7 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
     MemLen = bf.MemLen;
     pMem = new TELEM[MemLen];
 
-    std::copy(bf.pMem, bf.pMem + MemLen, pMem);
+    copy(bf.pMem, bf.pMem + MemLen, pMem);
 }
 
 TBitField::~TBitField()
@@ -70,7 +70,7 @@ void TBitField::SetBit(const int n) // установить бит
     }
     else
     {
-        throw std::out_of_range("Bit index out of range!");
+        throw out_of_range("Bit index out of range!");
     }
 }
 
@@ -82,7 +82,7 @@ void TBitField::ClrBit(const int n) // очистить бит
     }
     else
     {
-        throw std::out_of_range("Bit index out of range!");
+        throw out_of_range("Bit index out of range!");
     }
 }
 
@@ -94,7 +94,7 @@ int TBitField::GetBit(const int n) const // получить значение б
     }
     else
     {
-        throw std::out_of_range("Bit index out of range!");
+        throw out_of_range("Bit index out of range!");
     }
 }
 
@@ -110,7 +110,7 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
         MemLen = bf.MemLen;
         pMem = new TELEM[MemLen];
 
-        std::copy(bf.pMem, bf.pMem + bf.MemLen, pMem);
+        copy(bf.pMem, bf.pMem + bf.MemLen, pMem);
     }
     else
     {
@@ -145,11 +145,11 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
-    int len = std::max(BitLen, bf.BitLen);
+    int len = max(BitLen, bf.BitLen);
     
     TBitField result(len);
 
-    int minMemLen = std::min(MemLen, bf.MemLen);
+    int minMemLen = min(MemLen, bf.MemLen);
 
     for (int i = 0; i < minMemLen; i++)
     {
@@ -158,11 +158,11 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
     if (MemLen > minMemLen)
     {
-        std::copy(pMem + minMemLen, pMem + MemLen, result.pMem + minMemLen);
+        copy(pMem + minMemLen, pMem + MemLen, result.pMem + minMemLen);
     }
     else if (bf.MemLen > minMemLen)
     {
-        std::copy(bf.pMem + minMemLen, bf.pMem + bf.MemLen, result.pMem + minMemLen);
+        copy(bf.pMem + minMemLen, bf.pMem + bf.MemLen, result.pMem + minMemLen);
     }
     
     int bitsInLastElem = BitLen % (sizeof(TELEM) * 8);
@@ -177,11 +177,11 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    int len = std::max(BitLen, bf.BitLen);
+    int len = max(BitLen, bf.BitLen);
 
     TBitField result(len);
 
-    int minMemLen = std::min(MemLen, bf.MemLen);
+    int minMemLen = min(MemLen, bf.MemLen);
     
     for (int i = 0; i < minMemLen; i++)
     {

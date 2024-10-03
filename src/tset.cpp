@@ -46,7 +46,7 @@ int TSet::IsMember(const int Elem) const // элемент множества?
     }
     else
     {
-        throw std::out_of_range("Element out of range!");
+        throw out_of_range("Element out of range!");
     }
 }
 
@@ -58,7 +58,7 @@ void TSet::InsElem(const int Elem) // включение элемента мно
     }
     else
     {
-        throw std::out_of_range("Element out of range!");
+        throw out_of_range("Element out of range!");
     }
 }
 
@@ -70,7 +70,7 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
     }
     else
     {
-        throw std::out_of_range("Element out of range!");
+        throw out_of_range("Element out of range!");
     }
 }
 
@@ -100,7 +100,7 @@ int TSet::operator!=(const TSet &s) const // сравнение
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    int newMaxPower = std::max(MaxPower, s.MaxPower);
+    int newMaxPower = max(MaxPower, s.MaxPower);
 
     TSet result(newMaxPower);
 
